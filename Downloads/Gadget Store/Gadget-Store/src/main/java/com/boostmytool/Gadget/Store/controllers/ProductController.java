@@ -3,7 +3,9 @@ package com.boostmytool.Gadget.Store.controllers;
 import java.util.List;
 
 import com.boostmytool.Gadget.Store.models.Product;
+import com.boostmytool.Gadget.Store.models.ProductDto;
 import com.boostmytool.Gadget.Store.services.ProductRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +21,16 @@ public class ProductController {
 
 @GetMapping({"" , "/"})
     public String showProductList (Model model) {
-        List<Product> products = repo.findAll() ;
+        List<Product> products = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
         model.addAttribute ("products" , products);
         return "products/index";
+    }
+
+    @GetMapping("/create")
+    public String showCreatePage(Model model) {
+        ProductDto productDto = new ProductDto();
+        model.addAttribute("productDto" , productDto);
+        return "products/CreateProduct";
     }
 
 
