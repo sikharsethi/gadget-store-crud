@@ -17,14 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.crypto.Data;
+//import javax.xml.crypto.Data;
 
 @Controller
 @RequestMapping("/products")
@@ -82,8 +79,49 @@ public class ProductController {
             System.out.println("Exception: " + ex.getMessage());
         }
 
+        Product product = new Product();
+        product.setName(productDto.getName());
+        product.setBrand(productDto.getBrand());
+        product.setCategory(productDto.getCategory());
+        product.setPrice(product.getPrice());
+        product.setDescription(productDto.getDescription());
+        product.setCreatedAt(createdAt);
+        product.setImageFileName(storageFileName);
+
+        repo.save(product);
+
         return "redirect:/products";
 
+    }
+
+    @GetMapping("/edit")
+    public  String showEditPage(
+            Model model,
+            @RequestParam int id
+    ) {
+
+    try {
+        Product product = repo.findById(id).get();
+        model.addAttribute("product", product);
+
+        ProductDto productDto = new ProductDto();
+        productDto.setName(product.getName());
+        productDto.setBrand(product.getBrand());
+        productDto.setCategory(product.getCategory());
+        productDto.setPrice(product.getPrice());
+        productDto.setDescription(product.getDescription());
+
+        model.addAttribute("productDto", productDto);
+
+    }
+
+    catch (Exception ex) {
+        System.out.println("Exception: " + ex.getMessage());
+        return "redirect:/products";
+    }
+
+
+    return "products/EditProducts";
     }
 
 
