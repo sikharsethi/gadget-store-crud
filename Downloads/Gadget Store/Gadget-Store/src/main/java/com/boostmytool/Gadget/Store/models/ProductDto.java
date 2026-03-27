@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductDto {
+
     @NotEmpty(message = "The name is required")
     private String name;
 
