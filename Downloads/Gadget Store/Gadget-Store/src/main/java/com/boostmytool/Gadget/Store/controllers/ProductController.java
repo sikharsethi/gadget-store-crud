@@ -143,7 +143,6 @@ public class ProductController {
                 product.setImageFileName(storageFileName);
             }
 
-            // Update other fields
             product.setName(productDto.getName());
             product.setBrand(productDto.getBrand());
             product.setCategory(productDto.getCategory());
@@ -154,6 +153,32 @@ public class ProductController {
 
         } catch (Exception ex) {
             System.out.println("Exception updating product: " + ex.getMessage());
+        }
+
+        return "redirect:/products";
+    }
+
+    @GetMapping("/delete")
+    public String deleteProduct(@RequestParam int id) {
+
+        try {
+            // Fetch product
+            Product product = repo.findById(id).get();
+
+            // Delete product image
+            Path imagePath = Paths.get("public/images/" + product.getImageFileName());
+
+            try {
+                Files.delete(imagePath);
+            } catch (Exception e) {
+                System.out.println("Image delete error: " + e.getMessage());
+            }
+
+            // DELETE PRODUCT
+            repo.delete(product);
+
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
         }
 
         return "redirect:/products";
