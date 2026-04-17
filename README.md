@@ -37,6 +37,12 @@ Product
 - brand
 - price
 
+- ## Project Screenshots
+
+![Home Page](home-page.png)
+![Product List](product-list.png)
+![Create Product](create-product.png)
+
 ## How to Run
 
 1. Clone the repository
